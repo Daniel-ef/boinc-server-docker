@@ -2,11 +2,13 @@
 
 set -e
 
+source /run/secrets/secrets.env
+
 cd /usr/local/boinc/tools
 
 ./make_project --url_base 'http://${url_host}' \
                --project_host '${project}' \
-               --db_host mysql \
+               --db_host '${DB_HOST}:${DB_PORT}' \
                --db_user root \
                --db_passwd '${db_passwd}' \
                --no_db \
