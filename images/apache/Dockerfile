@@ -64,12 +64,11 @@ FROM base$TAG AS apache
 ONBUILD ARG BOINC_USER
 ONBUILD ARG PROJECT_ROOT
 ONBUILD ARG DB_HOST
-ONBUILD ARG DB_PORT
 ONBUILD ENV BOINC_USER=$BOINC_USER \
             PROJECT_ROOT=$PROJECT_ROOT \
             USER=$BOINC_USER \
             HOME=/home/$BOINC_USER \
-            MYSQL_HOST=$DB_HOST:DB_PORT
+            MYSQL_HOST=$DB_HOST
 
 # set up the non-root user who runs the dameons
 ONBUILD RUN adduser $BOINC_USER --disabled-password --gecos ""

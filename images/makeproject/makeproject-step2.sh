@@ -15,7 +15,7 @@ for file in config.xml html/user/schedulers.txt *.httpd.conf html/project/projec
            -e "s|REPLACE WITH PROJECT NAME|$PROJECT|gI" \
            -e "s|\${PROJECT_ROOT}|$PROJECT_ROOT|gI" \
            -e "s|\${URL_BASE}|$URL_BASE|gI" \
-           -e "s|\${DB_HOST}|$DB_HOST:$DB_PORT|gI" \
+           -e "s|\${DB_HOST}|$DB_HOST|gI" \
            -e "s|\${DB_PASSWD}|$DB_PASSWD|gI" \
            -e "s|\${MAILPASS}|$MAILPASS|gI" \
            -e "s|\${RECAPTCHA_PUBLIC_KEY}|$RECAPTCHA_PUBLIC_KEY|gI" \
@@ -38,7 +38,7 @@ cd $PROJECT_ROOT
 
 # wait for MySQL server to start
 echo "Waiting for MySQL server to start..."
-if ! timeout -s KILL 60 mysqladmin ping -h $DB_HOST -P $DB_PORT --wait ; then
+if ! timeout -s KILL 60 mysqladmin ping -h $DB_HOST --wait ; then
     echo "MySQL server failed to start after 60 seconds. Aborting."
     exit 1
 fi
@@ -47,9 +47,9 @@ fi
 # if we can get in the root MySQL account without password, it means this is the
 # first run after project creation, in which case set the password, and create
 # the project database
-if mysql -u root -h $DB_HOST -P $DB_PORT -e "" &> /dev/null ; then
+if mysql -u root -h $DB_HOST -e "" ; then
     echo "Creating database..."
-    mysqladmin -h $DB_HOST -P $DB_PORT -u root password $DB_PASSWD
+    mysqladmin -h $DB_HOST -u root password $DB_PASSWD
     PYTHONPATH=/usr/local/boinc/py python -c """if 1:
         from Boinc import database, configxml
         database.create_database(srcdir='/usr/local/boinc',

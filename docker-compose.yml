@@ -16,7 +16,6 @@ services:
         - BOINC_USER
         - PROJECT_ROOT
         - DB_HOST
-        - DB_PORT
     volumes:
       - "project:$PROJECT_ROOT.dst"
       - "secrets:/run/secrets"
@@ -35,7 +34,6 @@ services:
         - BOINC_USER
         - PROJECT_ROOT
         - DB_HOST
-        - DB_PORT
     hostname: $PROJECT
     volumes: 
       - "project:$PROJECT_ROOT"
