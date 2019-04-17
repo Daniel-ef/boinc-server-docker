@@ -40,6 +40,10 @@ RUN chmod 644 /etc/logrotate.d/boincserver
 # set up supervisor to run
 COPY makeproject-step3.sh /usr/bin/
 COPY supervisord.conf /etc/supervisor/conf.d/
+# remove links to /dev/stdout
+RUN rm /var/log/apache2/access.log && touch /var/log/apache2/access.log
+RUN rm /var/log/apache2/error.log && touch /var/log/apache2/error.log
+RUN rm /var/log/apache2/other_vhosts_access.log && touch /var/log/apache2/other_vhosts_access.log
 CMD ["/usr/bin/supervisord"]
 
 
