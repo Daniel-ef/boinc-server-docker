@@ -61,17 +61,19 @@ services:
 
   metricbeat:
     image: docker.elastic.co/beats/metricbeat:7.0.0
+    build:
+      context: metricbeat
     volumes:
       - type: bind
-        source=/proc
-        target=/hostfs/proc
-        read_only=true 
-      - type=bind
-        source=/sys/fs/cgroup
-        target=/hostfs/sys/fs/cgroup
-        read_only=true
-      - type=bind
-        source=/
-        target=/hostfs
-        read_only=true
-            --net=host \ 
+        source: /proc
+        target: /hostfs/proc
+        read_only: true 
+      - type: bind
+        source: /sys/fs/cgroup
+        target: /hostfs/sys/fs/cgroup
+        read_only: true
+      - type: bind
+        source: /
+        target: /hostfs
+        read_only: true
+    network_mode: "host"
