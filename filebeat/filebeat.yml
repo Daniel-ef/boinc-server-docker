@@ -1,0 +1,13 @@
+filebeat.modules:
+- module: apache
+  access:
+    enabled: true
+    var.paths: ["/var/log/apache2/access.log*"]
+  error:
+    enabled: true
+    var.paths: ["/var/log/apache2/error.log*"]
+output.logstash:
+  hosts: ["172.31.44.103:5044"]
+
+setup.kibana:
+  host: "172.31.44.103:5601"
