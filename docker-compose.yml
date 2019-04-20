@@ -4,8 +4,6 @@ volumes:
   project:
   results:
   secrets:
-  apache_access:
-  apache_errors:
   logs:
 
 services:
@@ -19,6 +17,7 @@ services:
         - BOINC_USER
         - PROJECT_ROOT
         - DB_HOST
+        - DB_REPLICA_HOST
     volumes:
       - "project:$PROJECT_ROOT.dst"
       - "secrets:/run/secrets"
@@ -37,6 +36,7 @@ services:
         - BOINC_USER
         - PROJECT_ROOT
         - DB_HOST
+        - DB_REPLICA_HOST
     hostname: $PROJECT
     volumes: 
       - "project:$PROJECT_ROOT"

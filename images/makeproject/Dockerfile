@@ -43,6 +43,7 @@ COPY makeproject-step1.sh makeproject-step2.sh /usr/local/bin/
 COPY --chown=1000 db_dump_spec.xml /.project_root/
 COPY --chown=1000 html /.project_root/html/
 COPY --chown=1000 secrets.env /run/secrets/
+COPY --chown=1000 config.xml $PROJECT_ROOT
 
 #==============================
 FROM debian:stretch-slim AS b2d
@@ -91,12 +92,14 @@ ENV TAG=$TAG
 ONBUILD ARG BOINC_USER
 ONBUILD ARG PROJECT_ROOT
 ONBUILD ARG DB_HOST 
+ONBUILD ARG DB_REPLICA_HOST
 ONBUILD ENV BOINC_USER=$BOINC_USER \
             PROJECT_ROOT=$PROJECT_ROOT \
             USER=$BOINC_USER \
             HOME=/home/$BOINC_USER \
-            MYSQL_HOST=$DB_HOST
-    
+            MYSQL_HOST=$DB_HOST \
+            DB_REPLICA_HOST=$DB_REPLICA_HOST
+
 # set up the non-root user who compiles the server
 ONBUILD RUN adduser $BOINC_USER --disabled-password --gecos ""
 

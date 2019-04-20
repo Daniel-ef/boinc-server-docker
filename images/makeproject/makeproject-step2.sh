@@ -17,6 +17,7 @@ for file in config.xml html/user/schedulers.txt *.httpd.conf html/project/projec
            -e "s|\${URL_BASE}|$URL_BASE|gI" \
            -e "s|\${DB_HOST}|$DB_HOST|gI" \
            -e "s|\${DB_PASSWD}|$DB_PASSWD|gI" \
+           -e "s|\${DB_REPLICA_HOST}|$DB_REPLICA_HOST|gI" \
            -e "s|\${MAILPASS}|$MAILPASS|gI" \
            -e "s|\${RECAPTCHA_PUBLIC_KEY}|$RECAPTCHA_PUBLIC_KEY|gI" \
            -e "s|\${RECAPTCHA_PRIVATE_KEY}|$RECAPTCHA_PRIVATE_KEY|gI" \
@@ -37,12 +38,11 @@ cd $PROJECT_ROOT
 
 
 # wait for MySQL server to start
-echo "Waiting for MySQL server to start..."
+echo "Waiting for MySQL server $DB_HOST to start..."
 if ! timeout -s KILL 60 mysqladmin ping -h $DB_HOST --wait ; then
     echo "MySQL server failed to start after 60 seconds. Aborting."
     exit 1
 fi
-
 
 # if we can get in the root MySQL account without password, it means this is the
 # first run after project creation, in which case set the password, and create
@@ -56,6 +56,13 @@ if mysql -u root -h $DB_HOST -e "" ; then
                                  config=configxml.ConfigFile(filename='$PROJECT_ROOT/config.xml').read().config,
                                  drop_first=False)
     """
+fi
+
+echo "Waiting for MySQL replica server $DB_REPLICA_HOST to start..."
+if ! timeout -s KILL 60 mysqladmin ping -h $DB_REPLICA_HOST --wait ; then
+    
+    echo "MySQL replica server failed to start after 60 seconds. Aborting."
+
 fi
 
 (cd html/ops && ./db_schemaversion.php > ${PROJECT_ROOT}/db_revision)
