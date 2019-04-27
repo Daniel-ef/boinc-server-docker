@@ -28,6 +28,7 @@ services:
 
   apache:
     image: boinc/server_apache:$VERSION$TAG$DEFAULTARGS
+    container_name: apache
     build: 
       context: images/apache
       target: apache$DEFAULTARGS
@@ -52,11 +53,12 @@ services:
       - URL_BASE
       - PROJECT
 
-  metricbeat-host:
+  metricbeat:
       build:
         context: ./metricbeat
         args:
           - METRICBEAT_FILE=metricbeat.yml
+          - ELK_HOST=$ELK_HOST
       container_name: metricbeat
       command: -system.hostfs=/hostfs
       volumes:

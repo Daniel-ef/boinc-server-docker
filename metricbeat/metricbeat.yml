@@ -27,10 +27,10 @@ metricbeat.modules:
 
 #-------------------------- Elasticsearch output ------------------------------
 output.elasticsearch:
-  hosts: ["${HOST_ELASTICSEARCH}"]
+  hosts: ["ELK_HOST:9200"]
 
 setup.kibana:
-  host: "${HOST_KIBANA}"
+  host: "ELK_HOST:5601"
 
 #============================== Dashboards =====================================
 # These settings control loading the sample dashboards to the Kibana index. Loading

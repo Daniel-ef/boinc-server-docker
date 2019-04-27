@@ -9,6 +9,9 @@ USER root
 
 RUN yum -y install nc
 
+ARG ELK_HOST
+RUN sed -i -e "s/ELK_HOST/${ELK_HOST}/g" /usr/share/metricbeat/metricbeat.yml
+
 RUN mkdir /var/log/metricbeat \
     && chown metricbeat /usr/share/metricbeat/metricbeat.yml \
     && chmod go-w /usr/share/metricbeat/metricbeat.yml \
